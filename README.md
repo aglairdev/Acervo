@@ -1,6 +1,6 @@
 # Acervo ꕤ
 
-Buscador de metadados de preservação digital.
+Buscador de metadados.
 
 ## Features
 
@@ -21,6 +21,13 @@ Para o funcionamento do motor de busca, é necessário popular o diretório `dat
     "link": ""
   }
 ]
+```
+Também precisa do arquivo `index.json`:
+
+```json
+{
+  "consoles": ["", ""]
+}
 ```
 
 ## Créditos
