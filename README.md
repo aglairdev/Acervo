@@ -1,12 +1,10 @@
 # Acervo ꕤ
 
-Buscador de metadados.
+Interface web para buscar e indexar ROMs localmente.
 
-## Features
+## Demo
 
-- Filtro em tempo real com debounce.
-- Conversão dinâmica de unidades.
-- Zero cookies, ads ou tracking.
+<img width="1816" height="934" alt="2026-05-11_02-49" src="https://github.com/user-attachments/assets/5efa05a3-1d21-4751-8f5f-19dedca8f285" />
 
 ## Config
 
@@ -36,5 +34,4 @@ Também precisa do arquivo `index.json`:
 - Fonte: [Press Start 2P via Google Fonts](https://fonts.google.com/specimen/Press+Start+2P).
 <hr>
 
-<!-- Base64: YWNlcnZvYnIubmV0bGlmeS5hcHA= -->
 > Apenas para fins educacionais.
