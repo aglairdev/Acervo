@@ -48,6 +48,39 @@ const q = query.toLowerCase().trim();
 if (!q) return [];
 return allRoms.filter(r => r.name.toLowerCase().includes(q));
 }
+async function downloadMediafire(el, mfUrl) {
+const original = el.textContent;
+el.textContent = 'AGUARDE...';
+el.style.pointerEvents = 'none';
+el.classList.add('is-disabled');
+try {
+const endpoint = `/.netlify/functions/mediafire?url=${encodeURIComponent(mfUrl)}`;
+const res = await fetch(endpoint);
+if (!res.ok) throw new Error(`HTTP ${res.status}`);
+const { url: directUrl } = await res.json();
+const a = document.createElement('a');
+a.href = directUrl;
+a.download = '';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+el.textContent = 'BAIXANDO...';
+setTimeout(() => {
+el.textContent = original;
+el.style.pointerEvents = '';
+el.classList.remove('is-disabled');
+}, 3000);
+} catch (err) {
+console.error('[MediaFire]', err);
+el.textContent = 'ERRO!';
+setTimeout(() => {
+el.textContent = original;
+el.style.pointerEvents = '';
+el.classList.remove('is-disabled');
+}, 2000);
+}
+}
+window.downloadMediafire = downloadMediafire;
 function renderResults(roms, query) {
 wrap.innerHTML = '';
 if (!query.trim()) {
@@ -68,6 +101,7 @@ header.style.cssText = 'font-size:0.42rem;color:var(--muted);margin-bottom:0.75r
 header.textContent = `${roms.length} resultado(s) para "${query.toUpperCase()}"`;
 wrap.appendChild(header);
 roms.forEach((rom, i) => {
+const isMF = rom.link && rom.link.includes('mediafire.com');
 const item = document.createElement('div');
 item.className = 'result-item';
 item.style.animationDelay = `${i * 0.04}s`;
@@ -80,13 +114,10 @@ item.innerHTML = `
 <span class="tag-lang" style="color: var(--accent); border: 1px solid var(--accent); padding: 2px 6px;">PT-BR</span>
 </div>
 </div>
-<a
-href="${escapeHtml(rom.link)}"
-class="nes-btn is-primary btn-download"
-download
-target="_blank"
-rel="noopener"
->BAIXAR</a>
+${isMF
+? `<a href="#" class="nes-btn is-primary btn-download" onclick="event.preventDefault(); window.downloadMediafire(this, '${escapeHtml(rom.link)}')">BAIXAR</a>`
+: `<a href="${escapeHtml(rom.link)}" class="nes-btn is-primary btn-download" download target="_blank" rel="noopener">BAIXAR</a>`
+}
 `;
 wrap.appendChild(item);
 });
